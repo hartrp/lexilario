@@ -1,0 +1,22 @@
+[
+  {
+    "id": "w2",
+    "word": "Lóbrego",
+    "syllables": "ló · bre · go",
+    "category": "adj.",
+    "definition": "Oscuro, tenebroso, sombrío o que inspira una tristeza profunda y silenciosa.",
+    "example": "«Cruzaron el zaguán lóbrego donde aún flotaba el olor a cera fría y madera húmeda.»",
+    "plain": "oscuro, tenebroso, sombrío, triste",
+    "tone": "Gótico / Sombrío"
+  },
+  {
+    "id": "w3",
+    "word": "Arrebol",
+    "syllables": "a · rre · bol",
+    "category": "s. m.",
+    "definition": "Color rojizo que adquieren las nubes iluminadas por los rayos del sol al amanecer o al caer la tarde.",
+    "example": "«El arrebol del poniente teñía las aguas tranquilas de la ría con un fulgor cobrizo.»",
+    "plain": "atardecer, cielo rojo, crepúsculo, rubor",
+    "tone": "Naturaleza / Sensorial"
+  }
+]
