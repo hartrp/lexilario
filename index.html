@@ -8,12 +8,10 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   
-  <!-- Tipografías Editoriales -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -47,14 +45,8 @@
     }
   </script>
   <style>
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .font-editorial {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-    }
-    /* Scrollbar sutil */
+    body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+    .font-editorial { font-family: 'Cormorant Garamond', Georgia, serif; }
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(150, 145, 135, 0.3); border-radius: 3px; }
@@ -115,7 +107,7 @@
   <!-- CONTENEDOR PRINCIPAL -->
   <main class="flex-1 max-w-5xl w-full mx-auto px-4 py-6">
 
-    <!-- ================= PESTAÑA 1: DESCUBRIR (Estilo thevocabulary.app) ================= -->
+    <!-- PESTAÑA 1: DESCUBRIR -->
     <section id="view-discover" class="space-y-6">
       <div class="flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-2 overflow-x-auto pb-1">
@@ -132,7 +124,6 @@
         </button>
       </div>
 
-      <!-- Tarjeta Principal estilo Editorial -->
       <div class="relative rounded-3xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border p-6 sm:p-12 shadow-sm min-h-[380px] flex flex-col justify-between">
         <div class="flex items-center justify-between text-xs text-paper-muted dark:text-night-muted">
           <span id="cardToneBadge" class="px-3 py-1 rounded-full border border-paper-border dark:border-night-border bg-paper-light/60 dark:bg-night-bg/60 font-medium">Atmósfera</span>
@@ -172,7 +163,7 @@
       </div>
     </section>
 
-    <!-- ================= PESTAÑA 2: MI GLOSARIO ================= -->
+    <!-- PESTAÑA 2: MI GLOSARIO -->
     <section id="view-glossary" class="hidden space-y-5">
       <div class="flex flex-col sm:flex-row gap-3">
         <div class="relative flex-1">
@@ -193,13 +184,13 @@
       <div id="glossaryGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
     </section>
 
-    <!-- ================= PESTAÑA 3: BUSCADOR INVERSO (AL ESCRIBIR) ================= -->
+    <!-- PESTAÑA 3: BUSCADOR INVERSO -->
     <section id="view-reverse" class="hidden space-y-6 max-w-3xl mx-auto">
       <div class="rounded-3xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border p-6 space-y-4">
         <div>
           <h2 class="font-editorial text-2xl font-bold">Buscador Inverso y Conceptual</h2>
           <p class="text-xs sm:text-sm text-paper-muted dark:text-night-muted mt-1">
-            Describe la sensación, escena o palabra común que quieres evitar mientras escribes. Busca primero en tus tarjetas y, si tienes la IA activa, genera sugerencias cultas a medida.
+            Describe la sensación, escena o palabra común que quieres evitar mientras escribes.
           </p>
         </div>
 
@@ -216,7 +207,7 @@
 
   </main>
 
-  <!-- ================= MODAL: APUNTAR PALABRA (Con Diccionario + IA) ================= -->
+  <!-- MODAL: APUNTAR PALABRA -->
   <div id="addModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
     <div class="bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-xl max-h-[90vh] overflow-y-auto">
       <div class="flex items-center justify-between">
@@ -233,7 +224,7 @@
               ✨ Autocompletar
             </button>
           </div>
-          <p id="autocompleteHint" class="text-[11px] text-paper-muted dark:text-night-muted mt-1">
+          <p class="text-[11px] text-paper-muted dark:text-night-muted mt-1">
             Rellena definición, sílabas, ejemplo y sinónimos llanos automáticamente.
           </p>
         </div>
@@ -284,7 +275,7 @@
     </div>
   </div>
 
-  <!-- ================= MODAL: AJUSTES DE SINCRONIZACIÓN GITHUB + IA ================= -->
+  <!-- MODAL: AJUSTES DE SINCRONIZACIÓN GITHUB + IA -->
   <div id="settingsModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
     <div class="bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border rounded-3xl max-w-lg w-full p-6 space-y-5 shadow-xl max-h-[90vh] overflow-y-auto">
       <div class="flex items-center justify-between">
@@ -292,28 +283,25 @@
         <button onclick="closeSettingsModal()" class="text-paper-muted hover:text-paper-ink text-xl">✕</button>
       </div>
 
-      <!-- Bloque 1: Gemini API -->
+      <!-- Bloque 1: Clave de Groq (IA gratis sin tarjeta) -->
       <div class="p-4 rounded-2xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border space-y-2.5">
         <div class="flex items-center justify-between">
-          <span class="text-xs font-semibold uppercase tracking-wider">1. Diccionario + IA en Vivo (Gemini API)</span>
-          <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-[11px] underline text-paper-accent dark:text-night-accent">Conseguir API Key gratis ↗</a>
+          <span class="text-xs font-semibold uppercase tracking-wider">1. Diccionario + IA en Vivo (Groq Gratis)</span>
+          <a href="https://console.groq.com/keys" target="_blank" class="text-[11px] underline text-paper-accent dark:text-night-accent font-medium">Sacar clave gratis sin tarjeta ↗</a>
         </div>
         <p class="text-xs text-paper-muted dark:text-night-muted">
-          Se guarda únicamente en la memoria privada de este navegador para autocompletar cualquier palabra de la RAE y usar el buscador inverso.
+          Pega aquí tu clave gratuita de <strong>Groq</strong> (empieza por <code>gsk_...</code>). No pide tarjeta ni facturación y funciona perfecto en España.
         </p>
-        <input type="password" id="cfgGeminiKey" placeholder="AIzaSy..." class="w-full px-3 py-2 rounded-xl bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border text-xs font-mono" />
+        <input type="password" id="cfgGeminiKey" placeholder="gsk_..." class="w-full px-3 py-2 rounded-xl bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border text-xs font-mono" />
       </div>
 
       <!-- Bloque 2: Sincronización GitHub -->
       <div class="p-4 rounded-2xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border space-y-2.5">
         <span class="text-xs font-semibold uppercase tracking-wider">2. Sincronización automática con GitHub</span>
-        <p class="text-xs text-paper-muted dark:text-night-muted">
-          Guarda y sincroniza tus palabras en un archivo <code>glosario.json</code> dentro de tu propio repositorio entre móvil y PC.
-        </p>
         <div class="grid grid-cols-2 gap-2">
           <div>
             <label class="text-[11px] text-paper-muted">Tu usuario de GitHub</label>
-            <input type="text" id="cfgGhOwner" placeholder="ej: nombre" class="w-full mt-0.5 px-3 py-2 rounded-xl bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border text-xs" />
+            <input type="text" id="cfgGhOwner" placeholder="ej: marinamoreno" class="w-full mt-0.5 px-3 py-2 rounded-xl bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border text-xs" />
           </div>
           <div>
             <label class="text-[11px] text-paper-muted">Nombre del repositorio</label>
@@ -321,7 +309,7 @@
           </div>
         </div>
         <div>
-          <label class="text-[11px] text-paper-muted">Personal Access Token (con permiso Contents: Read & Write)</label>
+          <label class="text-[11px] text-paper-muted">Personal Access Token (Contents: Read & Write)</label>
           <input type="password" id="cfgGhToken" placeholder="github_pat_..." class="w-full mt-0.5 px-3 py-2 rounded-xl bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border text-xs font-mono" />
         </div>
       </div>
@@ -350,11 +338,10 @@
 
   <!-- LÓGICA DE LA APLICACIÓN -->
   <script>
-    // ================= 1. SEMILLA DE VOCABULARIO CULTO Y DICCIONARIO DE RESPALDO =================
     const SEED_DISCOVER_WORDS = [
       {
         id: 'w1', word: 'Inmarcesible', syllables: 'in · mar · ce · si · ble', category: 'adj.',
-        definition: 'Que no se puede marchitar; que conserva intacta su hermosura o vigencia a pesar del tiempo.',
+        definition: 'Que no se puede marchitar; que conserva intacta su fuerza, hermosura o vigencia a pesar del paso del tiempo.',
         example: '«Guardaba en la memoria el rastro inmarcesible de aquel último verano en la costa.»',
         plain: 'eterno, imborrable, imperecedero', tone: 'Cultismo / Precisión'
       },
@@ -377,7 +364,7 @@
         plain: 'terco, obstinado, testarudo, persistente', tone: 'Psicológico / Emocional'
       },
       {
-        id: 'w5', word: 'komorebi / Horripilación', word: 'Estulticia', syllables: 'es · tul · ti · cia', category: 's. f.',
+        id: 'w5', word: 'Estulticia', syllables: 'es · tul · ti · cia', category: 's. f.',
         definition: 'Necedad, torpeza notable del entendimiento o falta de lucidez presuntuosa.',
         example: '«Sonrió con cansancio ante la solemne estulticia de su interlocutor.»',
         plain: 'tontería, necedad, estupidez, ignorancia', tone: 'Cultismo / Precisión'
@@ -414,7 +401,6 @@
       }
     ];
 
-    // ================= 2. ESTADO DE LA APLICACIÓN =================
     let discoverList = JSON.parse(localStorage.getItem('lexico_discover')) || SEED_DISCOVER_WORDS;
     let glossary = JSON.parse(localStorage.getItem('lexico_glossary')) || [SEED_DISCOVER_WORDS[1], SEED_DISCOVER_WORDS[2]];
     let currentDiscoverTone = 'Todas';
@@ -427,7 +413,6 @@
       ghToken: ''
     };
 
-    // ================= 3. INICIALIZACIÓN =================
     window.addEventListener('DOMContentLoaded', () => {
       if (localStorage.getItem('lexico_theme') === 'dark') {
         document.documentElement.classList.add('dark');
@@ -466,7 +451,6 @@
       });
     }
 
-    // ================= 4. LÓGICA DE DESCUBRIMIENTO =================
     function getFilteredDiscoverList() {
       if (currentDiscoverTone === 'Todas') return discoverList;
       return discoverList.filter(w => w.tone === currentDiscoverTone);
@@ -523,7 +507,6 @@
       }
     }
 
-    // ================= 5. MI GLOSARIO =================
     function renderGlossary() {
       document.getElementById('glossaryCount').textContent = glossary.length;
       const query = (document.getElementById('glossarySearch')?.value || '').toLowerCase().trim();
@@ -579,7 +562,6 @@
       }
     }
 
-    // ================= 6. AUTOCOMPLETADO CON IA EN VIVO + DICCIONARIO =================
     function openAddModal() {
       document.getElementById('addModal').classList.remove('hidden');
       document.getElementById('addModal').classList.add('flex');
@@ -591,43 +573,38 @@
       document.getElementById('addModal').classList.remove('flex');
     }
 
-   async function callGeminiJSON(promptText) {
+    // CONEXIÓN CON LA IA (GROQ)
+    async function callAIJSON(promptText) {
       if (!settings.geminiKey) {
-        throw new Error('NO_KEY');
+        throw new Error('Falta configurar tu clave gsk_... en Ajustes (⚙️)');
       }
       const key = settings.geminiKey.trim();
-      const models = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-2.0-flash'];
-      let lastError = '';
+      const url = `https://api.groq.com/openai/v1/chat/completions`;
 
-      for (const model of models) {
-        try {
-          const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
-          const res = await fetch(url, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'x-goog-api-key': key
-            },
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: promptText }] }],
-              generationConfig: { responseMimeType: "application/json" }
-            })
-          });
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${key}`
+        },
+        body: JSON.stringify({
+          model: 'llama-3.3-70b-versatile',
+          messages: [
+            { role: 'system', content: 'Eres un lexicógrafo de la RAE y escritor literario experto. Devuelve estrictamente un JSON válido (o un array JSON) sin bloques markdown ni texto adicional.' },
+            { role: 'user', content: promptText }
+          ],
+          response_format: { type: 'json_object' }
+        })
+      });
 
-          const data = await res.json();
-          if (!res.ok) {
-            lastError = data.error?.message || `Error ${res.status}`;
-            continue;
-          }
-
-          let raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
-          raw = raw.replace(/```json/gi, '').replace(/```/g, '').trim();
-          return JSON.parse(raw);
-        } catch (e) {
-          lastError = e.message;
-        }
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error?.message || `Error HTTP ${res.status}`);
       }
-      throw new Error(lastError || 'API_ERROR');
+
+      let raw = data.choices?.[0]?.message?.content || '{}';
+      raw = raw.replace(/```json/gi, '').replace(/```/g, '').trim();
+      return JSON.parse(raw);
     }
 
     async function autocompleteWord() {
@@ -642,7 +619,6 @@
       btn.disabled = true;
 
       try {
-        // 1. Buscar primero en la base local por rapidez
         const localMatch = [...SEED_DISCOVER_WORDS, ...glossary].find(w => w.word.toLowerCase() === word.toLowerCase());
         if (localMatch && !settings.geminiKey) {
           fillModalFields(localMatch);
@@ -650,38 +626,22 @@
           return;
         }
 
-        // 2. Si hay Gemini API Key configurada, generar ficha literaria completa estilo RAE
-        if (settings.geminiKey) {
-          const prompt = `Actúa como lexicógrafo de la RAE y escritor literario. Analiza la palabra en español "${word}" y devuelve exclusivamente un objeto JSON con estas claves exactas:
-          {
-            "word": "Palabra con ortografía y tilde correcta",
-            "syllables": "sí · la · bas separadas por punto medio",
-            "category": "abreviatura gramatical (adj., s. f., s. m., v. tr.)",
-            "definition": "Definición culta, precisa y clara estilo diccionario RAE",
-            "example": "Una frase literaria evocadora y breve que muestre su uso",
-            "plain": "3 o 4 palabras sencillas o cotidianas a las que sustituye separadas por comas",
-            "tone": "Elige exactamente una: 'Gótico / Sombrío', 'Naturaleza / Sensorial', 'Psicológico / Emocional', 'Arcaísmo / Histórico' o 'Cultismo / Precisión'"
-          }`;
-          const info = await callGeminiJSON(prompt);
-          fillModalFields(info);
-          showToast('Definición y matices generados con IA');
-        } else {
-          // 3. Fallback a diccionario abierto Wiktionary ES si no ha puesto su API Key aún
-          const wikiRes = await fetch(`https://es.wiktionary.org/api/rest_v1/page/definition/${encodeURIComponent(word.toLowerCase())}`);
-          if (wikiRes.ok) {
-            const wikiData = await wikiRes.json();
-            const rawDef = wikiData.es?.[0]?.definitions?.[0]?.definition?.replace(/<[^>]*>?/gm, '') || '';
-            if (rawDef) {
-              document.getElementById('inputDefinition').value = rawDef;
-              document.getElementById('inputCategory').value = wikiData.es?.[0]?.partOfSpeech || 'adj.';
-              showToast('Definición extraída del diccionario (añade tu Gemini Key en ⚙️ para IA completa)');
-              return;
-            }
-          }
-          showToast('Configura tu Gemini API Key gratuita en ⚙️ para autocompletar cualquier palabra con IA');
-        }
+        const prompt = `Analiza la palabra en español "${word}" y devuelve un objeto JSON con estas claves exactas:
+        {
+          "word": "Palabra con ortografía y tilde correcta",
+          "syllables": "sí · la · bas separadas por punto medio",
+          "category": "abreviatura gramatical (adj., s. f., s. m., v. tr.)",
+          "definition": "Definición culta, precisa y clara estilo diccionario RAE",
+          "example": "Una frase literaria evocadora y breve que muestre su uso",
+          "plain": "3 o 4 palabras sencillas o cotidianas a las que sustituye separadas por comas",
+          "tone": "Elige exactamente una: 'Gótico / Sombrío', 'Naturaleza / Sensorial', 'Psicológico / Emocional', 'Arcaísmo / Histórico' o 'Cultismo / Precisión'"
+        }`;
+        
+        const info = await callAIJSON(prompt);
+        fillModalFields(info);
+        showToast('Definición y matices generados con IA');
       } catch (e) {
-        showToast('Revisa tu clave de Gemini en ⚙️ Ajustes');
+        showToast('Error IA: ' + e.message);
       } finally {
         btn.textContent = '✨ Autocompletar';
         btn.disabled = false;
@@ -722,11 +682,10 @@
       showToast(`«${word}» guardada y sincronizada`);
     }
 
-    // ================= 7. GENERADOR DE NUEVAS TANDAS Y BUSCADOR INVERSO =================
     async function generateNewDiscoveryBatch() {
       if (!settings.geminiKey) {
         openSettingsModal();
-        showToast('Añade tu Gemini API Key gratuita en ⚙️ para generar nuevas tandas infinitas');
+        showToast('Añade tu clave gsk_... en ⚙️ para generar nuevas tandas');
         return;
       }
       const btn = document.getElementById('btnGenerateBatch');
@@ -734,8 +693,10 @@
       btn.disabled = true;
       try {
         const toneInstruction = currentDiscoverTone === 'Todas' ? 'variadas (gótico, sensorial, psicológico, histórico y cultismos)' : `centradas en la atmósfera "${currentDiscoverTone}"`;
-        const prompt = `Genera una lista JSON de 6 palabras cultas, literarias y poco frecuentes del español ${toneInstruction}. Devuelve un array JSON de objetos con las claves exactas: word, syllables, category, definition, example, plain, tone (usando una de: 'Gótico / Sombrío', 'Naturaleza / Sensorial', 'Psicológico / Emocional', 'Arcaísmo / Histórico', 'Cultismo / Precisión').`;
-        const newWords = await callGeminiJSON(prompt);
+        const prompt = `Genera un objeto JSON con una propiedad "words" que sea un array de 6 palabras cultas, literarias y poco frecuentes del español ${toneInstruction}. Cada objeto del array debe tener: word, syllables, category, definition, example, plain, tone (usando una de: 'Gótico / Sombrío', 'Naturaleza / Sensorial', 'Psicológico / Emocional', 'Arcaísmo / Histórico', 'Cultismo / Precisión').`;
+        
+        const res = await callAIJSON(prompt);
+        const newWords = res.words || res;
         if (Array.isArray(newWords) && newWords.length > 0) {
           discoverList = [...newWords.map((w, i) => ({ ...w, id: 'ai_' + Date.now() + i })), ...discoverList];
           localStorage.setItem('lexico_discover', JSON.stringify(discoverList));
@@ -744,7 +705,7 @@
           showToast('6 nuevas palabras literarias añadidas al carrusel');
         }
       } catch (e) {
-        showToast('No se pudo generar la tanda. Verifica tu API Key en ⚙️');
+        showToast('Error al generar: ' + e.message);
       } finally {
         btn.textContent = '✨ Generar nueva tanda con IA';
         btn.disabled = false;
@@ -757,7 +718,6 @@
       const container = document.getElementById('reverseResults');
       const btn = document.getElementById('btnReverseSearch');
 
-      // 1. Buscar coincidencias en el propio glosario y semillas
       const pool = [...glossary, ...SEED_DISCOVER_WORDS];
       const localMatches = pool.filter(w =>
         w.plain?.toLowerCase().includes(query.toLowerCase()) ||
@@ -771,14 +731,14 @@
       try {
         let aiSuggestions = [];
         if (settings.geminiKey) {
-          const prompt = `Un escritor busca la palabra culta o literaria exacta en español para expresar o sustituir esta idea: "${query}". Devuelve un array JSON de 5 términos precisos con las claves: word, syllables, category, definition, example, plain, tone ('Gótico / Sombrío', 'Naturaleza / Sensorial', 'Psicológico / Emocional', 'Arcaísmo / Histórico' o 'Cultismo / Precisión').`;
-          const res = await callGeminiJSON(prompt);
-          if (Array.isArray(res)) aiSuggestions = res;
+          const prompt = `Un escritor busca 5 palabras cultas o literarias en español para expresar esta idea: "${query}". Devuelve un objeto JSON con una propiedad "results" que sea un array de objetos con las claves: word, syllables, category, definition, example, plain, tone ('Gótico / Sombrío', 'Naturaleza / Sensorial', 'Psicológico / Emocional', 'Arcaísmo / Histórico' o 'Cultismo / Precisión').`;
+          const res = await callAIJSON(prompt);
+          aiSuggestions = res.results || res || [];
         }
 
         const combined = [...localMatches, ...aiSuggestions];
         if (combined.length === 0) {
-          container.innerHTML = `<div class="p-5 rounded-2xl bg-paper-card dark:bg-night-card text-sm">No se encontraron coincidencias locales. Activa tu clave de Gemini en ⚙️ para buscar cualquier descripción o concepto abierto.</div>`;
+          container.innerHTML = `<div class="p-5 rounded-2xl bg-paper-card dark:bg-night-card text-sm">No se encontraron coincidencias.</div>`;
           return;
         }
 
@@ -800,7 +760,7 @@
           </div>
         `).join('');
       } catch (e) {
-        showToast('Error al consultar la IA');
+        showToast('Error en buscador inverso: ' + e.message);
       } finally {
         btn.textContent = 'Buscar léxico preciso';
         btn.disabled = false;
@@ -819,7 +779,6 @@
       }
     }
 
-    // ================= 8. SINCRONIZACIÓN CON GITHUB API (glosario.json) =================
     function openSettingsModal() {
       document.getElementById('cfgGeminiKey').value = settings.geminiKey || '';
       document.getElementById('cfgGhOwner').value = settings.ghOwner || '';
@@ -869,7 +828,6 @@
       }
     }
 
-    // Codificación UTF-8 segura para Base64 en la API de GitHub
     function utf8ToBase64(str) {
       return btoa(new TextEncoder().encode(str).reduce((acc, byte) => acc + String.fromCharCode(byte), ''));
     }
@@ -891,7 +849,6 @@
           }
         });
         if (res.status === 404) {
-          // Si aún no existe glosario.json en el repositorio, lo creamos con los datos actuales
           await syncToGitHub();
           return;
         }
@@ -899,7 +856,6 @@
         const data = await res.json();
         const remoteGlossary = JSON.parse(base64ToUtf8(data.content));
         if (Array.isArray(remoteGlossary)) {
-          // Fusionar palabras remotas y locales sin duplicar
           const map = new Map();
           [...remoteGlossary, ...glossary].forEach(item => map.set(item.word.toLowerCase(), item));
           glossary = Array.from(map.values());
@@ -952,7 +908,6 @@
       }
     }
 
-    // ================= 9. EXPORTAR / IMPORTAR ARCHIVO JSON =================
     function exportGlossaryJSON() {
       const blob = new Blob([JSON.stringify(glossary, null, 2)], { type: 'application/json' });
       const a = document.createElement('a');
