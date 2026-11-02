@@ -1,1 +1,966 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Léxico Literario — Glosario Personal</title>
+  <meta name="theme-color" content="#F7F4EF" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  
+  <!-- Tipografías Editoriales -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            paper: {
+              light: '#F7F4EF',
+              card: '#EFECE6',
+              border: '#E2DDD5',
+              ink: '#1C1B18',
+              muted: '#6E6A63',
+              accent: '#7C2D12'
+            },
+            night: {
+              bg: '#141413',
+              card: '#1E1E1C',
+              border: '#2E2D2A',
+              ink: '#EDEAE4',
+              muted: '#9A968E',
+              accent: '#D97757'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .font-editorial {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+    }
+    /* Scrollbar sutil */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(150, 145, 135, 0.3); border-radius: 3px; }
+  </style>
+</head>
+<body class="bg-paper-light text-paper-ink dark:bg-night-bg dark:text-night-ink min-h-screen transition-colors duration-300 flex flex-col">
 
+  <!-- CABECERA -->
+  <header class="sticky top-0 z-30 backdrop-blur-md bg-paper-light/90 dark:bg-night-bg/90 border-b border-paper-border dark:border-night-border">
+    <div class="max-w-5xl mx-auto px-4 py-3.5 flex items-center justify-between gap-2">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-paper-ink text-paper-light dark:bg-night-ink dark:text-night-bg flex items-center justify-center font-editorial font-bold text-xl tracking-tighter">
+          L
+        </div>
+        <div>
+          <h1 class="font-editorial text-2xl font-bold leading-none tracking-tight">Léxico Literario</h1>
+          <div class="flex items-center gap-2 mt-0.5">
+            <span id="syncStatusDot" class="w-2 h-2 rounded-full bg-amber-500"></span>
+            <span id="syncStatusText" class="text-[11px] text-paper-muted dark:text-night-muted">Memoria local</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="openAddModal()" class="px-3.5 py-2 rounded-full bg-paper-ink text-paper-light dark:bg-night-ink dark:text-night-bg text-xs sm:text-sm font-medium hover:opacity-90 transition flex items-center gap-1.5 shadow-sm">
+          <span>+</span> <span>Apuntar palabra</span>
+        </button>
+        
+        <button onclick="syncFromGitHub(true)" id="btnQuickSync" title="Sincronizar ahora con GitHub" class="p-2 rounded-full border border-paper-border dark:border-night-border hover:bg-paper-card dark:hover:bg-night-card transition hidden">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+        </button>
+
+        <button onclick="toggleTheme()" title="Cambiar modo de lectura" class="p-2 rounded-full border border-paper-border dark:border-night-border hover:bg-paper-card dark:hover:bg-night-card transition">
+          <span id="themeIcon">🌙</span>
+        </button>
+
+        <button onclick="openSettingsModal()" title="Ajustes de Nube (GitHub) e IA" class="p-2 rounded-full border border-paper-border dark:border-night-border hover:bg-paper-card dark:hover:bg-night-card transition relative">
+          <span>⚙️</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- NAVEGACIÓN DE PESTAÑAS -->
+    <nav class="max-w-5xl mx-auto px-4 flex gap-6 text-sm border-t border-paper-border/50 dark:border-night-border/50 overflow-x-auto">
+      <button onclick="switchTab('discover')" id="tab-discover" class="py-2.5 border-b-2 border-paper-ink dark:border-night-ink font-medium whitespace-nowrap transition">
+        ✦ Descubrir
+      </button>
+      <button onclick="switchTab('glossary')" id="tab-glossary" class="py-2.5 border-b-2 border-transparent text-paper-muted dark:text-night-muted hover:text-paper-ink dark:hover:text-night-ink whitespace-nowrap transition flex items-center gap-1.5">
+        <span>Mi Glosario</span>
+        <span id="glossaryCount" class="text-[11px] px-1.5 py-0.5 rounded-full bg-paper-card dark:bg-night-card">0</span>
+      </button>
+      <button onclick="switchTab('reverse')" id="tab-reverse" class="py-2.5 border-b-2 border-transparent text-paper-muted dark:text-night-muted hover:text-paper-ink dark:hover:text-night-ink whitespace-nowrap transition">
+        🔍 Buscador Inverso (Al escribir)
+      </button>
+    </nav>
+  </header>
+
+  <!-- CONTENEDOR PRINCIPAL -->
+  <main class="flex-1 max-w-5xl w-full mx-auto px-4 py-6">
+
+    <!-- ================= PESTAÑA 1: DESCUBRIR (Estilo thevocabulary.app) ================= -->
+    <section id="view-discover" class="space-y-6">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-2 overflow-x-auto pb-1">
+          <span class="text-xs uppercase tracking-wider text-paper-muted dark:text-night-muted mr-1">Atmósfera:</span>
+          <button onclick="setDiscoverFilter('Todas')" class="disc-filter px-3 py-1 rounded-full text-xs border border-paper-border dark:border-night-border bg-paper-ink text-paper-light dark:bg-night-ink dark:text-night-bg" data-tone="Todas">Todas</button>
+          <button onclick="setDiscoverFilter('Gótico / Sombrío')" class="disc-filter px-3 py-1 rounded-full text-xs border border-paper-border dark:border-night-border" data-tone="Gótico / Sombrío">Gótico / Sombrío</button>
+          <button onclick="setDiscoverFilter('Naturaleza / Sensorial')" class="disc-filter px-3 py-1 rounded-full text-xs border border-paper-border dark:border-night-border" data-tone="Naturaleza / Sensorial">Naturaleza / Sensorial</button>
+          <button onclick="setDiscoverFilter('Psicológico / Emocional')" class="disc-filter px-3 py-1 rounded-full text-xs border border-paper-border dark:border-night-border" data-tone="Psicológico / Emocional">Psicológico</button>
+          <button onclick="setDiscoverFilter('Arcaísmo / Histórico')" class="disc-filter px-3 py-1 rounded-full text-xs border border-paper-border dark:border-night-border" data-tone="Arcaísmo / Histórico">Arcaísmo / Histórico</button>
+        </div>
+
+        <button onclick="generateNewDiscoveryBatch()" id="btnGenerateBatch" class="text-xs px-3.5 py-1.5 rounded-full border border-paper-border dark:border-night-border hover:bg-paper-card dark:hover:bg-night-card transition flex items-center gap-1.5">
+          <span>✨ Generar nueva tanda con IA</span>
+        </button>
+      </div>
+
+      <!-- Tarjeta Principal estilo Editorial -->
+      <div class="relative rounded-3xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border p-6 sm:p-12 shadow-sm min-h-[380px] flex flex-col justify-between">
+        <div class="flex items-center justify-between text-xs text-paper-muted dark:text-night-muted">
+          <span id="cardToneBadge" class="px-3 py-1 rounded-full border border-paper-border dark:border-night-border bg-paper-light/60 dark:bg-night-bg/60 font-medium">Atmósfera</span>
+          <span id="cardCounter">1 / 10</span>
+        </div>
+
+        <div class="my-8 text-center max-w-2xl mx-auto space-y-4">
+          <div class="text-xs tracking-widest uppercase text-paper-muted dark:text-night-muted">
+            <span id="cardSyllables">in · mar · ce · si · ble</span> · <span id="cardCategory" class="italic">adj.</span>
+          </div>
+          <h2 id="cardWord" class="font-editorial text-5xl sm:text-6xl font-bold tracking-tight">Inmarcesible</h2>
+          <p id="cardDefinition" class="text-base sm:text-lg leading-relaxed text-paper-ink/90 dark:text-night-ink/90">
+            Que no se puede marchitar; que conserva intacta su fuerza, hermosura o vigencia a pesar del paso del tiempo.
+          </p>
+          <blockquote id="cardExample" class="font-editorial italic text-lg sm:text-xl text-paper-muted dark:text-night-muted pt-2 border-t border-paper-border/60 dark:border-night-border/60 max-w-lg mx-auto">
+            «Guardaba en la memoria el rastro inmarcesible de aquel último verano.»
+          </blockquote>
+          <div class="pt-2">
+            <span class="text-[11px] uppercase tracking-wider text-paper-muted dark:text-night-muted">Sustituye a la idea llana: </span>
+            <span id="cardPlain" class="text-xs font-medium text-paper-accent dark:text-night-accent">eterno, imborrable, que no se marchita</span>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-4 border-t border-paper-border dark:border-night-border">
+          <button onclick="prevDiscoverCard()" class="px-4 py-2 rounded-full text-xs sm:text-sm border border-paper-border dark:border-night-border hover:bg-paper-light dark:hover:bg-night-bg transition">
+            ← Anterior
+          </button>
+
+          <button onclick="saveCurrentDiscoverCard()" id="btnSaveDiscover" class="px-5 py-2.5 rounded-full text-xs sm:text-sm font-medium bg-paper-ink text-paper-light dark:bg-night-ink dark:text-night-bg hover:opacity-90 transition">
+            ☆ Guardar en mi glosario
+          </button>
+
+          <button onclick="nextDiscoverCard()" class="px-4 py-2 rounded-full text-xs sm:text-sm border border-paper-border dark:border-night-border hover:bg-paper-light dark:hover:bg-night-bg transition">
+            Siguiente →
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PESTAÑA 2: MI GLOSARIO ================= -->
+    <section id="view-glossary" class="hidden space-y-5">
+      <div class="flex flex-col sm:flex-row gap-3">
+        <div class="relative flex-1">
+          <input type="text" id="glossarySearch" oninput="renderGlossary()" placeholder="Busca por palabra culta o por idea llana (ej: 'oscuro', 'triste', 'atardecer')..." class="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border text-sm focus:outline-none focus:ring-2 focus:ring-paper-ink/20 dark:focus:ring-night-ink/20" />
+          <span class="absolute left-3.5 top-3 text-paper-muted dark:text-night-muted text-sm">🔍</span>
+        </div>
+
+        <select id="glossaryToneFilter" onchange="renderGlossary()" class="px-4 py-2.5 rounded-2xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border text-sm focus:outline-none">
+          <option value="Todas">Todas las atmósferas</option>
+          <option value="Gótico / Sombrío">Gótico / Sombrío</option>
+          <option value="Naturaleza / Sensorial">Naturaleza / Sensorial</option>
+          <option value="Psicológico / Emocional">Psicológico / Emocional</option>
+          <option value="Arcaísmo / Histórico">Arcaísmo / Histórico</option>
+          <option value="Cultismo / Precisión">Cultismo / Precisión</option>
+        </select>
+      </div>
+
+      <div id="glossaryGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+    </section>
+
+    <!-- ================= PESTAÑA 3: BUSCADOR INVERSO (AL ESCRIBIR) ================= -->
+    <section id="view-reverse" class="hidden space-y-6 max-w-3xl mx-auto">
+      <div class="rounded-3xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border p-6 space-y-4">
+        <div>
+          <h2 class="font-editorial text-2xl font-bold">Buscador Inverso y Conceptual</h2>
+          <p class="text-xs sm:text-sm text-paper-muted dark:text-night-muted mt-1">
+            Describe la sensación, escena o palabra común que quieres evitar mientras escribes. Busca primero en tus tarjetas y, si tienes la IA activa, genera sugerencias cultas a medida.
+          </p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-2">
+          <input type="text" id="reverseInput" onkeydown="if(event.key==='Enter') runReverseSearch()" placeholder="Ej: 'olor a tierra mojada', 'luz débil entre los árboles', 'silencio tenso'..." class="flex-1 px-4 py-3 rounded-2xl bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border text-sm focus:outline-none" />
+          <button onclick="runReverseSearch()" id="btnReverseSearch" class="px-5 py-3 rounded-2xl bg-paper-ink text-paper-light dark:bg-night-ink dark:text-night-bg text-sm font-medium hover:opacity-90 transition whitespace-nowrap">
+            Buscar léxico preciso
+          </button>
+        </div>
+      </div>
+
+      <div id="reverseResults" class="space-y-3"></div>
+    </section>
+
+  </main>
+
+  <!-- ================= MODAL: APUNTAR PALABRA (Con Diccionario + IA) ================= -->
+  <div id="addModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-xl max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between">
+        <h3 class="font-editorial text-2xl font-bold">Apuntar palabra</h3>
+        <button onclick="closeAddModal()" class="text-paper-muted hover:text-paper-ink text-xl">✕</button>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="text-xs font-medium text-paper-muted dark:text-night-muted">Palabra</label>
+          <div class="flex gap-2 mt-1">
+            <input type="text" id="inputWord" placeholder="Ej: Estulticia, Arrebol, Lóbrego..." class="flex-1 px-3.5 py-2.5 rounded-xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border text-sm focus:outline-none" />
+            <button onclick="autocompleteWord()" id="btnAutocomplete" class="px-3.5 py-2.5 rounded-xl bg-paper-accent text-white dark:bg-night-accent dark:text-night-bg text-xs font-medium hover:opacity-90 transition whitespace-nowrap">
+              ✨ Autocompletar
+            </button>
+          </div>
+          <p id="autocompleteHint" class="text-[11px] text-paper-muted dark:text-night-muted mt-1">
+            Rellena definición, sílabas, ejemplo y sinónimos llanos automáticamente.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-xs font-medium text-paper-muted dark:text-night-muted">Categoría (adj., s. f., v.)</label>
+            <input type="text" id="inputCategory" placeholder="adj. / s. m." class="w-full mt-1 px-3 py-2 rounded-xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border text-xs" />
+          </div>
+          <div>
+            <label class="text-xs font-medium text-paper-muted dark:text-night-muted">Sílabas</label>
+            <input type="text" id="inputSyllables" placeholder="ló · bre · go" class="w-full mt-1 px-3 py-2 rounded-xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border text-xs" />
+          </div>
+        </div>
+
+        <div>
+          <label class="text-xs font-medium text-paper-muted dark:text-night-muted">Definición precisa</label>
+          <textarea id="inputDefinition" rows="2" placeholder="Acepción literaria o culta..." class="w-full mt-1 px-3.5 py-2 rounded-xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border text-sm"></textarea>
+        </div>
+
+        <div>
+          <label class="text-xs font-medium text-paper-muted dark:text-night-muted">Cita o ejemplo de tus lecturas</label>
+          <textarea id="inputExample" rows="2" placeholder="Frase donde la encontraste o ejemplo de uso..." class="w-full mt-1 px-3.5 py-2 rounded-xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border text-sm font-editorial italic"></textarea>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <div>
+            <label class="text-xs font-medium text-paper-muted dark:text-night-muted">Ideas llanas (para encontrarla al escribir)</label>
+            <input type="text" id="inputPlain" placeholder="oscuro, triste, sombrío" class="w-full mt-1 px-3 py-2 rounded-xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border text-xs" />
+          </div>
+          <div>
+            <label class="text-xs font-medium text-paper-muted dark:text-night-muted">Atmósfera / Tono</label>
+            <select id="inputTone" class="w-full mt-1 px-3 py-2 rounded-xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border text-xs">
+              <option value="Gótico / Sombrío">Gótico / Sombrío</option>
+              <option value="Naturaleza / Sensorial">Naturaleza / Sensorial</option>
+              <option value="Psicológico / Emocional">Psicológico / Emocional</option>
+              <option value="Arcaísmo / Histórico">Arcaísmo / Histórico</option>
+              <option value="Cultismo / Precisión">Cultismo / Precisión</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-3 border-t border-paper-border dark:border-night-border">
+        <button onclick="closeAddModal()" class="px-4 py-2 rounded-xl text-xs border border-paper-border dark:border-night-border">Cancelar</button>
+        <button onclick="saveWordFromModal()" class="px-5 py-2 rounded-xl text-xs font-medium bg-paper-ink text-paper-light dark:bg-night-ink dark:text-night-bg">Guardar en mi glosario</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: AJUSTES DE SINCRONIZACIÓN GITHUB + IA ================= -->
+  <div id="settingsModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border rounded-3xl max-w-lg w-full p-6 space-y-5 shadow-xl max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between">
+        <h3 class="font-editorial text-2xl font-bold">Nube (GitHub) e IA en Vivo</h3>
+        <button onclick="closeSettingsModal()" class="text-paper-muted hover:text-paper-ink text-xl">✕</button>
+      </div>
+
+      <!-- Bloque 1: Gemini API -->
+      <div class="p-4 rounded-2xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border space-y-2.5">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-semibold uppercase tracking-wider">1. Diccionario + IA en Vivo (Gemini API)</span>
+          <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-[11px] underline text-paper-accent dark:text-night-accent">Conseguir API Key gratis ↗</a>
+        </div>
+        <p class="text-xs text-paper-muted dark:text-night-muted">
+          Se guarda únicamente en la memoria privada de este navegador para autocompletar cualquier palabra de la RAE y usar el buscador inverso.
+        </p>
+        <input type="password" id="cfgGeminiKey" placeholder="AIzaSy..." class="w-full px-3 py-2 rounded-xl bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border text-xs font-mono" />
+      </div>
+
+      <!-- Bloque 2: Sincronización GitHub -->
+      <div class="p-4 rounded-2xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border space-y-2.5">
+        <span class="text-xs font-semibold uppercase tracking-wider">2. Sincronización automática con GitHub</span>
+        <p class="text-xs text-paper-muted dark:text-night-muted">
+          Guarda y sincroniza tus palabras en un archivo <code>glosario.json</code> dentro de tu propio repositorio entre móvil y PC.
+        </p>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-[11px] text-paper-muted">Tu usuario de GitHub</label>
+            <input type="text" id="cfgGhOwner" placeholder="ej: marinamoreno" class="w-full mt-0.5 px-3 py-2 rounded-xl bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border text-xs" />
+          </div>
+          <div>
+            <label class="text-[11px] text-paper-muted">Nombre del repositorio</label>
+            <input type="text" id="cfgGhRepo" placeholder="ej: lexico-literario" class="w-full mt-0.5 px-3 py-2 rounded-xl bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border text-xs" />
+          </div>
+        </div>
+        <div>
+          <label class="text-[11px] text-paper-muted">Personal Access Token (con permiso Contents: Read & Write)</label>
+          <input type="password" id="cfgGhToken" placeholder="github_pat_..." class="w-full mt-0.5 px-3 py-2 rounded-xl bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border text-xs font-mono" />
+        </div>
+      </div>
+
+      <!-- Bloque 3: Copia Manual -->
+      <div class="p-4 rounded-2xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border space-y-2">
+        <span class="text-xs font-semibold uppercase tracking-wider">3. Copia de seguridad manual (JSON)</span>
+        <div class="flex flex-wrap gap-2 pt-1">
+          <button onclick="exportGlossaryJSON()" class="px-3 py-1.5 rounded-xl text-xs border border-paper-border dark:border-night-border bg-paper-light dark:bg-night-bg">⬇ Descargar glosario.json</button>
+          <label class="px-3 py-1.5 rounded-xl text-xs border border-paper-border dark:border-night-border bg-paper-light dark:bg-night-bg cursor-pointer">
+            ⬆ Importar archivo JSON
+            <input type="file" accept=".json" onchange="importGlossaryJSON(event)" class="hidden" />
+          </label>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="closeSettingsModal()" class="px-4 py-2 rounded-xl text-xs border border-paper-border dark:border-night-border">Cerrar</button>
+        <button onclick="saveSettings()" class="px-5 py-2 rounded-xl text-xs font-medium bg-paper-ink text-paper-light dark:bg-night-ink dark:text-night-bg">Guardar y Sincronizar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTIFICACIÓN TOAST -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 px-4 py-2.5 rounded-2xl bg-paper-ink text-paper-light dark:bg-night-ink dark:text-night-bg text-xs font-medium shadow-lg hidden transition-all"></div>
+
+  <!-- LÓGICA DE LA APLICACIÓN -->
+  <script>
+    // ================= 1. SEMILLA DE VOCABULARIO CULTO Y DICCIONARIO DE RESPALDO =================
+    const SEED_DISCOVER_WORDS = [
+      {
+        id: 'w1', word: 'Inmarcesible', syllables: 'in · mar · ce · si · ble', category: 'adj.',
+        definition: 'Que no se puede marchitar; que conserva intacta su hermosura o vigencia a pesar del tiempo.',
+        example: '«Guardaba en la memoria el rastro inmarcesible de aquel último verano en la costa.»',
+        plain: 'eterno, imborrable, imperecedero', tone: 'Cultismo / Precisión'
+      },
+      {
+        id: 'w2', word: 'Lóbrego', syllables: 'ló · bre · go', category: 'adj.',
+        definition: 'Oscuro, tenebroso, sombrío o que inspira una tristeza profunda y silenciosa.',
+        example: '«Cruzaron el zaguán lóbrego donde aún flotaba el olor a cera fría y madera húmeda.»',
+        plain: 'oscuro, tenebroso, sombrío, triste', tone: 'Gótico / Sombrío'
+      },
+      {
+        id: 'w3', word: 'Arrebol', syllables: 'a · rre · bol', category: 's. m.',
+        definition: 'Color rojizo que adquieren las nubes iluminadas por los rayos del sol al amanecer o al caer la tarde.',
+        example: '«El arrebol del poniente teñía las aguas tranquilas de la ría con un fulgor cobrizo.»',
+        plain: 'atardecer, cielo rojo, crepúsculo, rubor', tone: 'Naturaleza / Sensorial'
+      },
+      {
+        id: 'w4', word: 'Contumaz', syllables: 'con · tu · maz', category: 'adj.',
+        definition: 'Obstinado, terco y porfiado en mantener un error, una actitud o un silencio.',
+        example: '«Mantuvo un silencio contumaz frente a todas las preguntas del tribunal.»',
+        plain: 'terco, obstinado, testarudo, persistente', tone: 'Psicológico / Emocional'
+      },
+      {
+        id: 'w5', word: 'komorebi / Horripilación', word: 'Estulticia', syllables: 'es · tul · ti · cia', category: 's. f.',
+        definition: 'Necedad, torpeza notable del entendimiento o falta de lucidez presuntuosa.',
+        example: '«Sonrió con cansancio ante la solemne estulticia de su interlocutor.»',
+        plain: 'tontería, necedad, estupidez, ignorancia', tone: 'Cultismo / Precisión'
+      },
+      {
+        id: 'w6', word: 'Umbrío', syllables: 'um · brí · o', category: 'adj.',
+        definition: 'Dicho de un paraje o rincón: donde da poco el sol y reina una sombra fresca y constante.',
+        example: '«Se internaron por el sendero umbrío de castaños hasta perder de vista el campanario.»',
+        plain: 'sombreado, oscuro, fresco, bosque', tone: 'Naturaleza / Sensorial'
+      },
+      {
+        id: 'w7', word: 'Aciago', syllables: 'a · cia · go', category: 'adj.',
+        definition: 'Infeliz, desgraciado, de mal agüero o portador de presagios funestos.',
+        example: '«Desde aquella madrugada aciaga, nadie volvió a pronunciar su nombre en la casa.»',
+        plain: 'trágico, desafortunado, maldito, triste', tone: 'Gótico / Sombrío'
+      },
+      {
+        id: 'w8', word: 'Zozobra', syllables: 'zo · zo · bra', category: 's. f.',
+        definition: 'Inquietud, aflicción y congoja del ánimo que no deja sosegar, por riesgo o duda inminente.',
+        example: '«Una íntima zozobra le impedía conciliar el sueño mientras escuchaba el viento en los cristales.»',
+        plain: 'angustia, ansiedad, inquietud, miedo', tone: 'Psicológico / Emocional'
+      },
+      {
+        id: 'w9', word: 'Atávico', syllables: 'a · tá · vi · co', category: 'adj.',
+        definition: 'Perteneciente a costumbres, miedos o instintos heredados de antepasados remotos.',
+        example: '«Sintió un pavor atávico al escuchar aquel crujido en la espesura.»',
+        plain: 'ancestral, antiguo, instintivo, heredado', tone: 'Arcaísmo / Histórico'
+      },
+      {
+        id: 'w10', word: 'Petricor', syllables: 'pe · tri · cor', category: 's. m.',
+        definition: 'Olor característico que produce la lluvia al caer sobre los suelos secos y las piedras.',
+        example: '«Abrió los postigos y el petricor de la tormenta de agosto inundó el estudio.»',
+        plain: 'olor a tierra mojada, lluvia, tormenta', tone: 'Naturaleza / Sensorial'
+      }
+    ];
+
+    // ================= 2. ESTADO DE LA APLICACIÓN =================
+    let discoverList = JSON.parse(localStorage.getItem('lexico_discover')) || SEED_DISCOVER_WORDS;
+    let glossary = JSON.parse(localStorage.getItem('lexico_glossary')) || [SEED_DISCOVER_WORDS[1], SEED_DISCOVER_WORDS[2]];
+    let currentDiscoverTone = 'Todas';
+    let currentCardIndex = 0;
+
+    let settings = JSON.parse(localStorage.getItem('lexico_settings')) || {
+      geminiKey: '',
+      ghOwner: '',
+      ghRepo: '',
+      ghToken: ''
+    };
+
+    // ================= 3. INICIALIZACIÓN =================
+    window.addEventListener('DOMContentLoaded', () => {
+      if (localStorage.getItem('lexico_theme') === 'dark') {
+        document.documentElement.classList.add('dark');
+        document.getElementById('themeIcon').textContent = '☀️';
+      }
+      updateSyncBadge();
+      renderDiscoverCard();
+      renderGlossary();
+      if (settings.ghToken && settings.ghOwner && settings.ghRepo) {
+        syncFromGitHub(false);
+      }
+    });
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.remove('hidden');
+      setTimeout(() => t.classList.add('hidden'), 3200);
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('lexico_theme', isDark ? 'dark' : 'light');
+      document.getElementById('themeIcon').textContent = isDark ? '☀️' : '🌙';
+    }
+
+    function switchTab(tab) {
+      ['discover', 'glossary', 'reverse'].forEach(t => {
+        document.getElementById(`view-${t}`).classList.toggle('hidden', t !== tab);
+        const btn = document.getElementById(`tab-${t}`);
+        if (t === tab) {
+          btn.className = 'py-2.5 border-b-2 border-paper-ink dark:border-night-ink font-medium whitespace-nowrap transition flex items-center gap-1.5';
+        } else {
+          btn.className = 'py-2.5 border-b-2 border-transparent text-paper-muted dark:text-night-muted hover:text-paper-ink dark:hover:text-night-ink whitespace-nowrap transition flex items-center gap-1.5';
+        }
+      });
+    }
+
+    // ================= 4. LÓGICA DE DESCUBRIMIENTO =================
+    function getFilteredDiscoverList() {
+      if (currentDiscoverTone === 'Todas') return discoverList;
+      return discoverList.filter(w => w.tone === currentDiscoverTone);
+    }
+
+    function setDiscoverFilter(tone) {
+      currentDiscoverTone = tone;
+      currentCardIndex = 0;
+      document.querySelectorAll('.disc-filter').forEach(btn => {
+        if (btn.dataset.tone === tone) {
+          btn.className = 'disc-filter px-3 py-1 rounded-full text-xs border border-paper-border dark:border-night-border bg-paper-ink text-paper-light dark:bg-night-ink dark:text-night-bg';
+        } else {
+          btn.className = 'disc-filter px-3 py-1 rounded-full text-xs border border-paper-border dark:border-night-border';
+        }
+      });
+      renderDiscoverCard();
+    }
+
+    function renderDiscoverCard() {
+      const list = getFilteredDiscoverList();
+      if (list.length === 0) return;
+      if (currentCardIndex >= list.length) currentCardIndex = 0;
+      if (currentCardIndex < 0) currentCardIndex = list.length - 1;
+
+      const item = list[currentCardIndex];
+      document.getElementById('cardToneBadge').textContent = item.tone;
+      document.getElementById('cardCounter').textContent = `${currentCardIndex + 1} / ${list.length}`;
+      document.getElementById('cardSyllables').textContent = item.syllables || item.word.toLowerCase();
+      document.getElementById('cardCategory').textContent = item.category || 'adj.';
+      document.getElementById('cardWord').textContent = item.word;
+      document.getElementById('cardDefinition').textContent = item.definition;
+      document.getElementById('cardExample').textContent = item.example;
+      document.getElementById('cardPlain').textContent = item.plain;
+
+      const alreadySaved = glossary.some(g => g.word.toLowerCase() === item.word.toLowerCase());
+      const btn = document.getElementById('btnSaveDiscover');
+      btn.textContent = alreadySaved ? '★ Guardada en tu glosario' : '☆ Guardar en mi glosario';
+    }
+
+    function nextDiscoverCard() { currentCardIndex++; renderDiscoverCard(); }
+    function prevDiscoverCard() { currentCardIndex--; renderDiscoverCard(); }
+
+    function saveCurrentDiscoverCard() {
+      const list = getFilteredDiscoverList();
+      const item = list[currentCardIndex];
+      if (!item) return;
+      if (!glossary.some(g => g.word.toLowerCase() === item.word.toLowerCase())) {
+        glossary.unshift({ ...item, id: 'g_' + Date.now() });
+        persistGlossary();
+        renderDiscoverCard();
+        showToast(`«${item.word}» añadida a tu glosario`);
+      } else {
+        showToast(`«${item.word}» ya está en tu glosario`);
+      }
+    }
+
+    // ================= 5. MI GLOSARIO =================
+    function renderGlossary() {
+      document.getElementById('glossaryCount').textContent = glossary.length;
+      const query = (document.getElementById('glossarySearch')?.value || '').toLowerCase().trim();
+      const tone = document.getElementById('glossaryToneFilter')?.value || 'Todas';
+
+      const filtered = glossary.filter(item => {
+        const matchesTone = tone === 'Todas' || item.tone === tone;
+        const matchesQuery = !query ||
+          item.word.toLowerCase().includes(query) ||
+          (item.plain && item.plain.toLowerCase().includes(query)) ||
+          (item.definition && item.definition.toLowerCase().includes(query));
+        return matchesTone && matchesQuery;
+      });
+
+      const grid = document.getElementById('glossaryGrid');
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div class="col-span-full text-center py-12 text-paper-muted dark:text-night-muted text-sm">No se encontraron palabras con ese filtro.</div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(item => `
+        <article class="rounded-2xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border p-5 flex flex-col justify-between gap-3">
+          <div>
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-[11px] px-2.5 py-0.5 rounded-full border border-paper-border dark:border-night-border">${item.tone || 'Cultismo'}</span>
+              <button onclick="deleteGlossaryWord('${item.id}')" title="Eliminar" class="text-xs text-paper-muted hover:text-red-500">✕</button>
+            </div>
+            <div class="mt-2 flex items-baseline gap-2">
+              <h3 class="font-editorial text-3xl font-bold">${item.word}</h3>
+              <span class="text-xs italic text-paper-muted dark:text-night-muted">${item.category || ''}</span>
+            </div>
+            <p class="text-sm mt-1.5 leading-relaxed">${item.definition}</p>
+            ${item.example ? `<p class="font-editorial italic text-sm text-paper-muted dark:text-night-muted mt-2">«${item.example.replace(/[«»]/g, '')}»</p>` : ''}
+          </div>
+          <div class="pt-2 border-t border-paper-border/60 dark:border-night-border/60 flex items-center justify-between text-xs">
+            <span class="text-paper-muted dark:text-night-muted">Idea llana: <strong class="text-paper-accent dark:text-night-accent font-medium">${item.plain || '—'}</strong></span>
+            <span class="text-[11px] text-paper-muted">${item.syllables || ''}</span>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function deleteGlossaryWord(id) {
+      glossary = glossary.filter(w => w.id !== id);
+      persistGlossary();
+    }
+
+    function persistGlossary() {
+      localStorage.setItem('lexico_glossary', JSON.stringify(glossary));
+      renderGlossary();
+      if (settings.ghToken && settings.ghOwner && settings.ghRepo) {
+        syncToGitHub();
+      }
+    }
+
+    // ================= 6. AUTOCOMPLETADO CON IA EN VIVO + DICCIONARIO =================
+    function openAddModal() {
+      document.getElementById('addModal').classList.remove('hidden');
+      document.getElementById('addModal').classList.add('flex');
+      document.getElementById('inputWord').focus();
+    }
+
+    function closeAddModal() {
+      document.getElementById('addModal').classList.add('hidden');
+      document.getElementById('addModal').classList.remove('flex');
+    }
+
+    async function callGeminiJSON(promptText) {
+      if (!settings.geminiKey) {
+        throw new Error('NO_KEY');
+      }
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(settings.geminiKey)}`;
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: promptText }] }],
+          generationConfig: { responseMimeType: "application/json" }
+        })
+      });
+      if (!res.ok) throw new Error('API_ERROR');
+      const data = await res.json();
+      const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
+      return JSON.parse(raw);
+    }
+
+    async function autocompleteWord() {
+      const word = document.getElementById('inputWord').value.trim();
+      if (!word) {
+        showToast('Escribe primero la palabra que quieres autocompletar');
+        return;
+      }
+
+      const btn = document.getElementById('btnAutocomplete');
+      btn.textContent = 'Buscando...';
+      btn.disabled = true;
+
+      try {
+        // 1. Buscar primero en la base local por rapidez
+        const localMatch = [...SEED_DISCOVER_WORDS, ...glossary].find(w => w.word.toLowerCase() === word.toLowerCase());
+        if (localMatch && !settings.geminiKey) {
+          fillModalFields(localMatch);
+          showToast('Autocompletado desde el diccionario local');
+          return;
+        }
+
+        // 2. Si hay Gemini API Key configurada, generar ficha literaria completa estilo RAE
+        if (settings.geminiKey) {
+          const prompt = `Actúa como lexicógrafo de la RAE y escritor literario. Analiza la palabra en español "${word}" y devuelve exclusivamente un objeto JSON con estas claves exactas:
+          {
+            "word": "Palabra con ortografía y tilde correcta",
+            "syllables": "sí · la · bas separadas por punto medio",
+            "category": "abreviatura gramatical (adj., s. f., s. m., v. tr.)",
+            "definition": "Definición culta, precisa y clara estilo diccionario RAE",
+            "example": "Una frase literaria evocadora y breve que muestre su uso",
+            "plain": "3 o 4 palabras sencillas o cotidianas a las que sustituye separadas por comas",
+            "tone": "Elige exactamente una: 'Gótico / Sombrío', 'Naturaleza / Sensorial', 'Psicológico / Emocional', 'Arcaísmo / Histórico' o 'Cultismo / Precisión'"
+          }`;
+          const info = await callGeminiJSON(prompt);
+          fillModalFields(info);
+          showToast('Definición y matices generados con IA');
+        } else {
+          // 3. Fallback a diccionario abierto Wiktionary ES si no ha puesto su API Key aún
+          const wikiRes = await fetch(`https://es.wiktionary.org/api/rest_v1/page/definition/${encodeURIComponent(word.toLowerCase())}`);
+          if (wikiRes.ok) {
+            const wikiData = await wikiRes.json();
+            const rawDef = wikiData.es?.[0]?.definitions?.[0]?.definition?.replace(/<[^>]*>?/gm, '') || '';
+            if (rawDef) {
+              document.getElementById('inputDefinition').value = rawDef;
+              document.getElementById('inputCategory').value = wikiData.es?.[0]?.partOfSpeech || 'adj.';
+              showToast('Definición extraída del diccionario (añade tu Gemini Key en ⚙️ para IA completa)');
+              return;
+            }
+          }
+          showToast('Configura tu Gemini API Key gratuita en ⚙️ para autocompletar cualquier palabra con IA');
+        }
+      } catch (e) {
+        showToast('Revisa tu clave de Gemini en ⚙️ Ajustes');
+      } finally {
+        btn.textContent = '✨ Autocompletar';
+        btn.disabled = false;
+      }
+    }
+
+    function fillModalFields(info) {
+      if (info.word) document.getElementById('inputWord').value = info.word;
+      document.getElementById('inputCategory').value = info.category || 'adj.';
+      document.getElementById('inputSyllables').value = info.syllables || '';
+      document.getElementById('inputDefinition').value = info.definition || '';
+      document.getElementById('inputExample').value = info.example || '';
+      document.getElementById('inputPlain').value = info.plain || '';
+      if (info.tone) document.getElementById('inputTone').value = info.tone;
+    }
+
+    function saveWordFromModal() {
+      const word = document.getElementById('inputWord').value.trim();
+      const definition = document.getElementById('inputDefinition').value.trim();
+      if (!word || !definition) {
+        showToast('Introduce al menos la palabra y su definición');
+        return;
+      }
+      const newEntry = {
+        id: 'g_' + Date.now(),
+        word,
+        category: document.getElementById('inputCategory').value.trim() || 'adj.',
+        syllables: document.getElementById('inputSyllables').value.trim(),
+        definition,
+        example: document.getElementById('inputExample').value.trim(),
+        plain: document.getElementById('inputPlain').value.trim(),
+        tone: document.getElementById('inputTone').value
+      };
+      glossary.unshift(newEntry);
+      persistGlossary();
+      closeAddModal();
+      ['inputWord', 'inputCategory', 'inputSyllables', 'inputDefinition', 'inputExample', 'inputPlain'].forEach(id => document.getElementById(id).value = '');
+      showToast(`«${word}» guardada y sincronizada`);
+    }
+
+    // ================= 7. GENERADOR DE NUEVAS TANDAS Y BUSCADOR INVERSO =================
+    async function generateNewDiscoveryBatch() {
+      if (!settings.geminiKey) {
+        openSettingsModal();
+        showToast('Añade tu Gemini API Key gratuita en ⚙️ para generar nuevas tandas infinitas');
+        return;
+      }
+      const btn = document.getElementById('btnGenerateBatch');
+      btn.textContent = 'Generando léxico...';
+      btn.disabled = true;
+      try {
+        const toneInstruction = currentDiscoverTone === 'Todas' ? 'variadas (gótico, sensorial, psicológico, histórico y cultismos)' : `centradas en la atmósfera "${currentDiscoverTone}"`;
+        const prompt = `Genera una lista JSON de 6 palabras cultas, literarias y poco frecuentes del español ${toneInstruction}. Devuelve un array JSON de objetos con las claves exactas: word, syllables, category, definition, example, plain, tone (usando una de: 'Gótico / Sombrío', 'Naturaleza / Sensorial', 'Psicológico / Emocional', 'Arcaísmo / Histórico', 'Cultismo / Precisión').`;
+        const newWords = await callGeminiJSON(prompt);
+        if (Array.isArray(newWords) && newWords.length > 0) {
+          discoverList = [...newWords.map((w, i) => ({ ...w, id: 'ai_' + Date.now() + i })), ...discoverList];
+          localStorage.setItem('lexico_discover', JSON.stringify(discoverList));
+          currentCardIndex = 0;
+          renderDiscoverCard();
+          showToast('6 nuevas palabras literarias añadidas al carrusel');
+        }
+      } catch (e) {
+        showToast('No se pudo generar la tanda. Verifica tu API Key en ⚙️');
+      } finally {
+        btn.textContent = '✨ Generar nueva tanda con IA';
+        btn.disabled = false;
+      }
+    }
+
+    async function runReverseSearch() {
+      const query = document.getElementById('reverseInput').value.trim();
+      if (!query) return;
+      const container = document.getElementById('reverseResults');
+      const btn = document.getElementById('btnReverseSearch');
+
+      // 1. Buscar coincidencias en el propio glosario y semillas
+      const pool = [...glossary, ...SEED_DISCOVER_WORDS];
+      const localMatches = pool.filter(w =>
+        w.plain?.toLowerCase().includes(query.toLowerCase()) ||
+        w.definition?.toLowerCase().includes(query.toLowerCase())
+      );
+
+      btn.textContent = 'Buscando...';
+      btn.disabled = true;
+      container.innerHTML = `<div class="text-xs text-paper-muted py-4">Consultando léxico literario para «${query}»...</div>`;
+
+      try {
+        let aiSuggestions = [];
+        if (settings.geminiKey) {
+          const prompt = `Un escritor busca la palabra culta o literaria exacta en español para expresar o sustituir esta idea: "${query}". Devuelve un array JSON de 5 términos precisos con las claves: word, syllables, category, definition, example, plain, tone ('Gótico / Sombrío', 'Naturaleza / Sensorial', 'Psicológico / Emocional', 'Arcaísmo / Histórico' o 'Cultismo / Precisión').`;
+          const res = await callGeminiJSON(prompt);
+          if (Array.isArray(res)) aiSuggestions = res;
+        }
+
+        const combined = [...localMatches, ...aiSuggestions];
+        if (combined.length === 0) {
+          container.innerHTML = `<div class="p-5 rounded-2xl bg-paper-card dark:bg-night-card text-sm">No se encontraron coincidencias locales. Activa tu clave de Gemini en ⚙️ para buscar cualquier descripción o concepto abierto.</div>`;
+          return;
+        }
+
+        window._lastReverseResults = combined;
+        container.innerHTML = combined.map((item, idx) => `
+          <div class="p-5 rounded-2xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border flex items-start justify-between gap-4">
+            <div class="space-y-1">
+              <div class="flex items-baseline gap-2">
+                <h4 class="font-editorial text-2xl font-bold">${item.word}</h4>
+                <span class="text-xs italic text-paper-muted">${item.category || ''}</span>
+                <span class="text-[11px] px-2 py-0.5 rounded-full border border-paper-border dark:border-night-border">${item.tone || 'Cultismo'}</span>
+              </div>
+              <p class="text-sm">${item.definition}</p>
+              ${item.example ? `<p class="font-editorial italic text-sm text-paper-muted">«${item.example.replace(/[«»]/g, '')}»</p>` : ''}
+            </div>
+            <button onclick="saveReverseResult(${idx})" class="px-3 py-1.5 rounded-full text-xs border border-paper-border dark:border-night-border hover:bg-paper-ink hover:text-paper-light transition whitespace-nowrap">
+              + Guardar
+            </button>
+          </div>
+        `).join('');
+      } catch (e) {
+        showToast('Error al consultar la IA');
+      } finally {
+        btn.textContent = 'Buscar léxico preciso';
+        btn.disabled = false;
+      }
+    }
+
+    function saveReverseResult(idx) {
+      const item = window._lastReverseResults?.[idx];
+      if (!item) return;
+      if (!glossary.some(g => g.word.toLowerCase() === item.word.toLowerCase())) {
+        glossary.unshift({ ...item, id: 'g_' + Date.now() });
+        persistGlossary();
+        showToast(`«${item.word}» guardada en tu glosario`);
+      } else {
+        showToast(`«${item.word}» ya estaba en tu glosario`);
+      }
+    }
+
+    // ================= 8. SINCRONIZACIÓN CON GITHUB API (glosario.json) =================
+    function openSettingsModal() {
+      document.getElementById('cfgGeminiKey').value = settings.geminiKey || '';
+      document.getElementById('cfgGhOwner').value = settings.ghOwner || '';
+      document.getElementById('cfgGhRepo').value = settings.ghRepo || '';
+      document.getElementById('cfgGhToken').value = settings.ghToken || '';
+      document.getElementById('settingsModal').classList.remove('hidden');
+      document.getElementById('settingsModal').classList.add('flex');
+    }
+
+    function closeSettingsModal() {
+      document.getElementById('settingsModal').classList.add('hidden');
+      document.getElementById('settingsModal').classList.remove('flex');
+    }
+
+    function saveSettings() {
+      settings = {
+        geminiKey: document.getElementById('cfgGeminiKey').value.trim(),
+        ghOwner: document.getElementById('cfgGhOwner').value.trim(),
+        ghRepo: document.getElementById('cfgGhRepo').value.trim(),
+        ghToken: document.getElementById('cfgGhToken').value.trim()
+      };
+      localStorage.setItem('lexico_settings', JSON.stringify(settings));
+      updateSyncBadge();
+      closeSettingsModal();
+      if (settings.ghToken && settings.ghOwner && settings.ghRepo) {
+        syncFromGitHub(true);
+      } else {
+        showToast('Ajustes guardados en este dispositivo');
+      }
+    }
+
+    function updateSyncBadge() {
+      const dot = document.getElementById('syncStatusDot');
+      const txt = document.getElementById('syncStatusText');
+      const btnQuick = document.getElementById('btnQuickSync');
+      const hasGh = settings.ghToken && settings.ghOwner && settings.ghRepo;
+      const hasAi = Boolean(settings.geminiKey);
+
+      if (hasGh) {
+        dot.className = 'w-2 h-2 rounded-full bg-emerald-500';
+        txt.textContent = `GitHub Sync activo ${hasAi ? '· IA activa' : ''}`;
+        btnQuick.classList.remove('hidden');
+      } else {
+        dot.className = 'w-2 h-2 rounded-full bg-amber-500';
+        txt.textContent = `Memoria local ${hasAi ? '· IA activa' : '(Configura ⚙️)'}`;
+        btnQuick.classList.add('hidden');
+      }
+    }
+
+    // Codificación UTF-8 segura para Base64 en la API de GitHub
+    function utf8ToBase64(str) {
+      return btoa(new TextEncoder().encode(str).reduce((acc, byte) => acc + String.fromCharCode(byte), ''));
+    }
+    function base64ToUtf8(b64) {
+      const bin = atob(b64.replace(/\n/g, ''));
+      const bytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      return new TextDecoder().decode(bytes);
+    }
+
+    async function syncFromGitHub(notify = false) {
+      if (!settings.ghToken || !settings.ghOwner || !settings.ghRepo) return;
+      const url = `https://api.github.com/repos/${settings.ghOwner}/${settings.ghRepo}/contents/glosario.json`;
+      try {
+        const res = await fetch(url, {
+          headers: {
+            'Authorization': `Bearer ${settings.ghToken}`,
+            'Accept': 'application/vnd.github+json'
+          }
+        });
+        if (res.status === 404) {
+          // Si aún no existe glosario.json en el repositorio, lo creamos con los datos actuales
+          await syncToGitHub();
+          return;
+        }
+        if (!res.ok) throw new Error('Error al leer GitHub');
+        const data = await res.json();
+        const remoteGlossary = JSON.parse(base64ToUtf8(data.content));
+        if (Array.isArray(remoteGlossary)) {
+          // Fusionar palabras remotas y locales sin duplicar
+          const map = new Map();
+          [...remoteGlossary, ...glossary].forEach(item => map.set(item.word.toLowerCase(), item));
+          glossary = Array.from(map.values());
+          localStorage.setItem('lexico_glossary', JSON.stringify(glossary));
+          renderGlossary();
+          renderDiscoverCard();
+          if (notify) showToast('Glosario sincronizado con GitHub');
+        }
+      } catch (e) {
+        if (notify) showToast('No se pudo conectar con el repositorio de GitHub');
+      }
+    }
+
+    async function syncToGitHub() {
+      if (!settings.ghToken || !settings.ghOwner || !settings.ghRepo) return;
+      const url = `https://api.github.com/repos/${settings.ghOwner}/${settings.ghRepo}/contents/glosario.json`;
+      try {
+        let sha = undefined;
+        const getRes = await fetch(url, {
+          headers: {
+            'Authorization': `Bearer ${settings.ghToken}`,
+            'Accept': 'application/vnd.github+json'
+          }
+        });
+        if (getRes.ok) {
+          const existing = await getRes.json();
+          sha = existing.sha;
+        }
+
+        const body = {
+          message: `Actualizar glosario (${glossary.length} palabras)`,
+          content: utf8ToBase64(JSON.stringify(glossary, null, 2)),
+          ...(sha ? { sha } : {})
+        };
+
+        const putRes = await fetch(url, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${settings.ghToken}`,
+            'Accept': 'application/vnd.github+json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(body)
+        });
+        if (putRes.ok) {
+          document.getElementById('syncStatusText').textContent = 'Sincronizado en GitHub ✓';
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    // ================= 9. EXPORTAR / IMPORTAR ARCHIVO JSON =================
+    function exportGlossaryJSON() {
+      const blob = new Blob([JSON.stringify(glossary, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'glosario-literario.json';
+      a.click();
+    }
+
+    function importGlossaryJSON(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const imported = JSON.parse(e.target.result);
+          if (Array.isArray(imported)) {
+            const map = new Map();
+            [...imported, ...glossary].forEach(item => map.set(item.word.toLowerCase(), item));
+            glossary = Array.from(map.values());
+            persistGlossary();
+            showToast(`${imported.length} palabras importadas con éxito`);
+          }
+        } catch (err) {
+          showToast('El archivo JSON no tiene un formato válido');
+        }
+      };
+      reader.readAsText(file);
+    }
+  </script>
+</body>
+</html>
