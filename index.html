@@ -54,7 +54,6 @@
 </head>
 <body class="bg-paper-light text-paper-ink dark:bg-night-bg dark:text-night-ink min-h-screen transition-colors duration-300 flex flex-col">
 
-  <!-- CABECERA -->
   <header class="sticky top-0 z-30 backdrop-blur-md bg-paper-light/90 dark:bg-night-bg/90 border-b border-paper-border dark:border-night-border">
     <div class="max-w-5xl mx-auto px-4 py-3.5 flex items-center justify-between gap-2">
       <div class="flex items-center gap-3">
@@ -89,7 +88,6 @@
       </div>
     </div>
 
-    <!-- NAVEGACIÓN DE PESTAÑAS -->
     <nav class="max-w-5xl mx-auto px-4 flex gap-6 text-sm border-t border-paper-border/50 dark:border-night-border/50 overflow-x-auto">
       <button onclick="switchTab('discover')" id="tab-discover" class="py-2.5 border-b-2 border-paper-ink dark:border-night-ink font-medium whitespace-nowrap transition">
         ✦ Descubrir
@@ -104,10 +102,8 @@
     </nav>
   </header>
 
-  <!-- CONTENEDOR PRINCIPAL -->
   <main class="flex-1 max-w-5xl w-full mx-auto px-4 py-6">
 
-    <!-- PESTAÑA 1: DESCUBRIR -->
     <section id="view-discover" class="space-y-6">
       <div class="flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-2 overflow-x-auto pb-1">
@@ -120,7 +116,7 @@
         </div>
 
         <button onclick="generateNewDiscoveryBatch()" id="btnGenerateBatch" class="text-xs px-3.5 py-1.5 rounded-full border border-paper-border dark:border-night-border hover:bg-paper-card dark:hover:bg-night-card transition flex items-center gap-1.5">
-          <span>✨ Generar nueva tanda con IA</span>
+          <span>✨ Generar nueva tanda con Gemini</span>
         </button>
       </div>
 
@@ -163,7 +159,6 @@
       </div>
     </section>
 
-    <!-- PESTAÑA 2: MI GLOSARIO -->
     <section id="view-glossary" class="hidden space-y-5">
       <div class="flex flex-col sm:flex-row gap-3">
         <div class="relative flex-1">
@@ -184,7 +179,6 @@
       <div id="glossaryGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
     </section>
 
-    <!-- PESTAÑA 3: BUSCADOR INVERSO -->
     <section id="view-reverse" class="hidden space-y-6 max-w-3xl mx-auto">
       <div class="rounded-3xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border p-6 space-y-4">
         <div>
@@ -207,7 +201,6 @@
 
   </main>
 
-  <!-- MODAL: APUNTAR PALABRA -->
   <div id="addModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
     <div class="bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-xl max-h-[90vh] overflow-y-auto">
       <div class="flex items-center justify-between">
@@ -225,7 +218,7 @@
             </button>
           </div>
           <p class="text-[11px] text-paper-muted dark:text-night-muted mt-1">
-            Rellena definición, sílabas, ejemplo y sinónimos llanos automáticamente.
+            Rellena definición, sílabas, ejemplo y sinónimos llanos automáticamente con Gemini.
           </p>
         </div>
 
@@ -275,27 +268,24 @@
     </div>
   </div>
 
-  <!-- MODAL: AJUSTES DE SINCRONIZACIÓN GITHUB + IA -->
   <div id="settingsModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
     <div class="bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border rounded-3xl max-w-lg w-full p-6 space-y-5 shadow-xl max-h-[90vh] overflow-y-auto">
       <div class="flex items-center justify-between">
-        <h3 class="font-editorial text-2xl font-bold">Nube (GitHub) e IA en Vivo</h3>
+        <h3 class="font-editorial text-2xl font-bold">Nube (GitHub) y Google Gemini</h3>
         <button onclick="closeSettingsModal()" class="text-paper-muted hover:text-paper-ink text-xl">✕</button>
       </div>
 
-      <!-- Bloque 1: Clave de Groq (IA gratis sin tarjeta) -->
       <div class="p-4 rounded-2xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border space-y-2.5">
         <div class="flex items-center justify-between">
-          <span class="text-xs font-semibold uppercase tracking-wider">1. Diccionario + IA en Vivo (Groq Gratis)</span>
-          <a href="https://console.groq.com/keys" target="_blank" class="text-[11px] underline text-paper-accent dark:text-night-accent font-medium">Sacar clave gratis sin tarjeta ↗</a>
+          <span class="text-xs font-semibold uppercase tracking-wider">1. Clave de API de Google Gemini</span>
+          <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-[11px] underline text-paper-accent dark:text-night-accent font-medium">Abrir Google AI Studio ↗</a>
         </div>
         <p class="text-xs text-paper-muted dark:text-night-muted">
-          Pega aquí tu clave gratuita de <strong>Groq</strong> (empieza por <code>gsk_...</code>). No pide tarjeta ni facturación y funciona perfecto en España.
+          Pega aquí tu clave de Google AI Studio (admite tanto las nuevas que empiezan por <code>AQ...</code> como las clásicas <code>AIza...</code>).
         </p>
-        <input type="password" id="cfgGeminiKey" placeholder="gsk_..." class="w-full px-3 py-2 rounded-xl bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border text-xs font-mono" />
+        <input type="password" id="cfgGeminiKey" placeholder="AQ... o AIzaSy..." class="w-full px-3 py-2 rounded-xl bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border text-xs font-mono" />
       </div>
 
-      <!-- Bloque 2: Sincronización GitHub -->
       <div class="p-4 rounded-2xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border space-y-2.5">
         <span class="text-xs font-semibold uppercase tracking-wider">2. Sincronización automática con GitHub</span>
         <div class="grid grid-cols-2 gap-2">
@@ -314,7 +304,6 @@
         </div>
       </div>
 
-      <!-- Bloque 3: Copia Manual -->
       <div class="p-4 rounded-2xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border space-y-2">
         <span class="text-xs font-semibold uppercase tracking-wider">3. Copia de seguridad manual (JSON)</span>
         <div class="flex flex-wrap gap-2 pt-1">
@@ -333,10 +322,8 @@
     </div>
   </div>
 
-  <!-- NOTIFICACIÓN TOAST -->
   <div id="toast" class="fixed bottom-5 right-5 z-50 px-4 py-2.5 rounded-2xl bg-paper-ink text-paper-light dark:bg-night-ink dark:text-night-bg text-xs font-medium shadow-lg hidden transition-all"></div>
 
-  <!-- LÓGICA DE LA APLICACIÓN -->
   <script>
     const SEED_DISCOVER_WORDS = [
       {
@@ -573,27 +560,29 @@
       document.getElementById('addModal').classList.remove('flex');
     }
 
-    // CONEXIÓN CON LA IA (GROQ)
+    // CONEXIÓN NATIVA CON GOOGLE GEMINI (SOPORTA CLAVES AQ. Y AIzaSy)
     async function callAIJSON(promptText) {
       if (!settings.geminiKey) {
-        throw new Error('Falta configurar tu clave gsk_... en Ajustes (⚙️)');
+        throw new Error('Falta configurar tu clave AQ... en Ajustes (⚙️)');
       }
       const key = settings.geminiKey.trim();
-      const url = `https://api.groq.com/openai/v1/chat/completions`;
+      const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
 
       const res = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${key}`
+          'x-goog-api-key': key
         },
         body: JSON.stringify({
-          model: 'llama-3.3-70b-versatile',
-          messages: [
-            { role: 'system', content: 'Eres un lexicógrafo de la RAE y escritor literario experto. Devuelve estrictamente un JSON válido (o un array JSON) sin bloques markdown ni texto adicional.' },
-            { role: 'user', content: promptText }
-          ],
-          response_format: { type: 'json_object' }
+          contents: [{
+            parts: [{
+              text: promptText + '\nResponde SOLO con un objeto JSON válido, sin bloques markdown ni texto adicional.'
+            }]
+          }],
+          generationConfig: {
+            responseMimeType: "application/json"
+          }
         })
       });
 
@@ -602,7 +591,7 @@
         throw new Error(data.error?.message || `Error HTTP ${res.status}`);
       }
 
-      let raw = data.choices?.[0]?.message?.content || '{}';
+      let raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
       raw = raw.replace(/```json/gi, '').replace(/```/g, '').trim();
       return JSON.parse(raw);
     }
@@ -639,9 +628,9 @@
         
         const info = await callAIJSON(prompt);
         fillModalFields(info);
-        showToast('Definición y matices generados con IA');
+        showToast('Definición y matices generados con Gemini');
       } catch (e) {
-        showToast('Error IA: ' + e.message);
+        showToast('Error Gemini: ' + e.message);
       } finally {
         btn.textContent = '✨ Autocompletar';
         btn.disabled = false;
@@ -685,7 +674,7 @@
     async function generateNewDiscoveryBatch() {
       if (!settings.geminiKey) {
         openSettingsModal();
-        showToast('Añade tu clave gsk_... en ⚙️ para generar nuevas tandas');
+        showToast('Añade tu clave AQ... en ⚙️ para generar nuevas tandas');
         return;
       }
       const btn = document.getElementById('btnGenerateBatch');
@@ -707,7 +696,7 @@
       } catch (e) {
         showToast('Error al generar: ' + e.message);
       } finally {
-        btn.textContent = '✨ Generar nueva tanda con IA';
+        btn.textContent = '✨ Generar nueva tanda con Gemini';
         btn.disabled = false;
       }
     }
@@ -819,11 +808,11 @@
 
       if (hasGh) {
         dot.className = 'w-2 h-2 rounded-full bg-emerald-500';
-        txt.textContent = `GitHub Sync activo ${hasAi ? '· IA activa' : ''}`;
+        txt.textContent = `GitHub Sync activo ${hasAi ? '· Gemini activo' : ''}`;
         btnQuick.classList.remove('hidden');
       } else {
         dot.className = 'w-2 h-2 rounded-full bg-amber-500';
-        txt.textContent = `Memoria local ${hasAi ? '· IA activa' : '(Configura ⚙️)'}`;
+        txt.textContent = `Memoria local ${hasAi ? '· Gemini activo' : '(Configura ⚙️)'}`;
         btnQuick.classList.add('hidden');
       }
     }
