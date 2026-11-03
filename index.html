@@ -560,40 +560,57 @@
       document.getElementById('addModal').classList.remove('flex');
     }
 
-    // CONEXIÓN NATIVA CON GOOGLE GEMINI (SOPORTA CLAVES AQ. Y AIzaSy)
+    // CONEXIÓN NATIVA CON GOOGLE GEMINI (SOPORTA CLAVES AQ. Y DETECTA EL MODELO ACTIVO)
     async function callAIJSON(promptText) {
       if (!settings.geminiKey) {
         throw new Error('Falta configurar tu clave AQ... en Ajustes (⚙️)');
       }
       const key = settings.geminiKey.trim();
-      const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
+      
+      const modelsToTry = [
+        'gemini-3.0-flash',
+        'gemini-3.8-flash',
+        'gemini-flash-latest',
+        'gemini-2.5-flash'
+      ];
 
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-goog-api-key': key
-        },
-        body: JSON.stringify({
-          contents: [{
-            parts: [{
-              text: promptText + '\nResponde SOLO con un objeto JSON válido, sin bloques markdown ni texto adicional.'
-            }]
-          }],
-          generationConfig: {
-            responseMimeType: "application/json"
-          }
-        })
-      });
+      let lastError = '';
 
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.error?.message || `Error HTTP ${res.status}`);
+      for (const modelName of modelsToTry) {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent`;
+
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-goog-api-key': key
+          },
+          body: JSON.stringify({
+            contents: [{
+              parts: [{
+                text: promptText + '\nResponde SOLO con un objeto JSON válido, sin bloques markdown ni texto adicional.'
+              }]
+            }],
+            generationConfig: {
+              responseMimeType: "application/json"
+            }
+          })
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          let raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
+          raw = raw.replace(/```json/gi, '').replace(/```/g, '').trim();
+          return JSON.parse(raw);
+        }
+
+        lastError = data.error?.message || `Error HTTP ${res.status}`;
+        if (!lastError.includes('no longer available') && !lastError.includes('not found') && res.status !== 404) {
+          throw new Error(lastError);
+        }
       }
 
-      let raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
-      raw = raw.replace(/```json/gi, '').replace(/```/g, '').trim();
-      return JSON.parse(raw);
+      throw new Error(lastError);
     }
 
     async function autocompleteWord() {
